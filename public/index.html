@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div>
+    <h1>user manager</h1>
+    <hr/>
+    <div class="page">
+
+    </div>
+
+</div>
+
+<script src="/js/jquery-1.9.1.js"></script>
+<script src="/js/underscore.js"></script>
+<script src="/js/backbone.js"></script>
+<script>
+
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        options.url = "http://127.0.0.1:3000" + options.url;
+    });
+
+
+    var Users = Backbone.Collection.extend({
+        url: '/users'
+    });
+
+    var UserList = Backbone.View.extend({
+        el: '.page',
+        render: function () {
+            var users=new Users();
+            users.fetch({
+                success:function(){
+                    this.$el.html('CONTENT SHOULD SOHW HERE ')
+                }
+            });
+
+        }
+    });
+
+
+    var Router = Backbone.Router.extend({
+        routes: {
+            '': "home"
+
+        }
+    });
+
+    var userList = new UserList();
+
+    var router = new Router();
+    router.on('route:home', function () {
+        console.log('load the home page!')
+        userList.render();
+    });
+
+    Backbone.history.start();
+
+</script>
+</body>
+</html>
